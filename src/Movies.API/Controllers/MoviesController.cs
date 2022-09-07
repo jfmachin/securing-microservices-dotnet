@@ -14,19 +14,27 @@ namespace Movies.API.Controllers {
         public MoviesController(MoviesContext context) {
             _context = context;
         }
+        
+        [HttpGet("{name}")]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovieByOwnerName(string name) {
+            return await _context.Movie
+                .Where(x => x.Owner.ToLower() == name.ToLower())
+                .ToListAsync();
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovie() {
             return await _context.Movie.ToListAsync();
         }
-
-        [HttpGet("{id}")]
+        
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Movie>> GetMovie(int id) {
             var movie = await _context.Movie.FindAsync(id);
             if (movie == null)
                 return NotFound();
             return movie;
         }
+        
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, Movie movie) {

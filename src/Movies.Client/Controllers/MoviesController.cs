@@ -24,8 +24,8 @@ namespace Movies.Client.Controllers {
         public async Task<IActionResult> Index() {
             foreach (var claim in User.Claims)
                 Console.WriteLine($"type {claim.Type} - value {claim.Value}");
-
-            return View(await movieApiService.GetMovies());
+            
+            return View(await movieApiService.GetMoviesByOwnerName(User.Identity.Name));
         }
 
         public async Task Logout() {
